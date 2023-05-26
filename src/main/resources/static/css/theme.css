@@ -1,0 +1,85 @@
+@charset "ISO-8859-1";
+
+.bg-gray-100{
+	background-color: #ECECEC!important;
+}
+
+.navbar {
+	background-color: #FFFFFF!important;
+}
+
+.sidebar .nav-link.active{
+  font-weight: 500;
+  color: red;
+}
+
+.sidebar .nav-link.active :hover{
+  font-weight: 500;
+  color: red;
+}
+
+.sidebar .nav-link{
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+@media(min-width: 768px){
+
+    #sidebar-items{
+		position:sticky
+		
+	}
+	
+	#sidebarMenu
+    {	 
+  		margin-bottom: -5000px; /* any large number will do */
+    }
+    
+}
+
+
+#sidebarMenu
+{	 
+  background-color: #0070AD!important;
+  
+}
+
+
+.nav-pills .nav-link.active
+{
+  background-color: #FFFFFF;
+  color: #0070AD;
+}
+
+.nav-link:hover{
+	color:#ECECEC
+}
+
+.card-body
+{
+	text-align: center;
+}
+
+.card-header
+{
+	text-align: center;
+}
+
+.chart-container{
+	position:relative;
+	height:100%;
+	width:100%;
+}
+
+.btn-primary{
+	color:#0070AD;
+    background-color: #eeeff0!important;
+	border-color:  #eeeff0!important;
+}
+
+.btn-primary:hover,.btn-primary:active, .btn-primary:visited
+{
+	background-color: #eeeff0!important;
+	border-color:  #eeeff0!important;
+	color:#0070AD;
+}
