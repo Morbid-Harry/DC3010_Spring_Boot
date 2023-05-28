@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="ISO-8859-1">
+<title>Manage Project Roles</title>
+
+<link href="/css/Bootstrap.css" type="text/css" rel="stylesheet">
+<link href="/css/theme.css" type="text/css" rel="stylesheet">
+<link href="/css/toolsbutton.css" type="text/css" rel="stylesheet">
+<link href="/css/formbutton.css" type="text/css" rel="stylesheet">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body class="bg-gray-100">
+
+	<div th:replace="~{header.html :: header}"></div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<nav id="sidebarMenu"
+				class="col-md-3 col-lg-2 d-md-block sidebar collapse"
+				style="max-width: 150px">
+				<div id="sidebar-items" class="sticky-top p-2">
+					<ul class="sticky-item nav nav-pills flex-column mb-auto">
+						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
+							class="nav-link" href="/create"> Create User</a></li>
+						<li class="nav-item"><a class="nav-link" href="/dashboard">
+								Dashboard </a></li>
+						<li sec:authorize="hasRole('ROLE_RM')" class="nav-item"><a
+							class="nav-link active" href="#"> Manage Project Roles </a></li>
+					</ul>
+
+					<hr>
+					<ul class="nav nav-pills flex-column mb-auto">
+						<li class="nav-item"><a class="nav-link" href="/logout">Signout</a></li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+				<div
+					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+					<h1 class="h2" th:inline="text">Create, Edit or Delete
+						Projects here</h1>
+
+				</div>
+				<div class="row d-flex flex-wrap flex-md-nowrap p-2">
+					<div class="col-6">
+						<div class="card my-3" style="width: 500px;">
+							<div class="card-body">
+								<h5 class="card-title">New Project Role Form</h5>
+								<form class="needs-validation" method="post" action="/create/project" 
+									novalidate>
+									<div th:if="${success != null}" class="px-2 mb-2">
+										<div class="alert alert-success alert-dismissible fade show"
+											role="alert">
+											Project Role Created!
+											<button type='button' class='btn-close'
+												data-bs-dismiss='alert' aria-label='Close'></button>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<div class="col-6">
+											<label for="client-name-input" class="form-label">Client
+												Name</label> <input type="text" class="form-control"
+												id="client-name-input" name="client-name"
+												placeholder="E.g. Mcdonalds" autocomplete="organization"
+												required>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter a client
+												name</div>
+										</div>
+										<div class="col-6">
+											<label for="project-name-input" class="form-label">Project
+												name</label> <input type="text" class="form-control"
+												id="project-name-input" name="project-name"
+												placeholder="E.g. Modernization Project"
+												autocomplete="family-name" required>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter a project
+												name</div>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<label for="grade-input" class="form-label">Grade Required</label>
+										<select class="form-select"id = "grade-input" name="project-grade">
+											<option value="A1">A1</option>
+											<option value="A2">A2</option>
+											<option value="A3">A3</option>
+											<option value="A4">A4</option>
+											<option value="A5">A5</option>
+											<option value="A6">A6</option>
+											<option value="A7">A7</option>
+											<option value="A8">A8</option>
+											<option value="A9">A9</option>
+											<option value="A10">A10</option>
+										</select>
+									</div>
+									<div class="mb-2 row">
+										<div class="col-6">
+											<label for="start-date-input" class="form-label">Expected
+												Start Date</label> <input type="date" max="9999-12-31"
+												class="form-control" id="start-date-input" name="start-date">
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter a valid date
+												in the form dd/mm/yyy</div>
+										</div>
+										<div class="col-6">
+											<label for="end-date-input" class="form-label">Expected
+												End Date</label> <input type="date" max="9999-12-31"
+												class="form-control" id="end-date-input" name="end-date">
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter a valid date
+												in the form dd/mm/yyyy</div>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<label for="work-input" class="form-label">Location of
+											Work</label> <select class="form-select" id="work-input"
+											name="work-location" onchange="toggleAddressField()">
+											<option value="Remote">Remote</option>
+											<option value="Hybrid">Hybrid</option>
+											<option value="Client_Site">Client Site</option>
+										</select>
+									</div>
+									<div class="mb-2 row">
+										<div id="address-field" style="display: none; ">
+											<label for="address-input" class="form-label">Address</label>
+											<input type="text" class="form-control" id="address-input"
+												name="address">
+												<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please specify the address of the client work</div>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<div class="col">
+											<label for="general-description-input" class="form-label">Role
+												Description</label>
+											<textarea class="form-control" id="general-description-input"
+												name="general-description"
+												placeholder="Description of the project role goes here"
+												style="height: 300px;resize: none;" required></textarea>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">The role must have a
+												description</div>
+										</div>
+									</div>
+									<div class="mb-2 row">
+									<label class="mb-2">Software/Tools Used (Select any that apply)</label>
+										<div class="my-button-group flex-wrap">
+											<span th:each="record : ${toolRecords}">
+												<input  type="checkbox" class="btn-check" th:id=${record.toolID} autocomplete="off" th:value="${record.toolName}" name="tools-used">
+												<label class="btn btn-primary" th:for="${record.toolID}">[[${record.toolName}]]</label>
+											</span>
+														
+										</div>
+
+									</div>
+									<div class="text-center">
+										<button id="sign-up" type="submit" class="btn btn-primary">Create
+											Project Role</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-6"></div>
+				</div>
+
+			</main>
+
+		</div>
+	</div>
+
+	<script src="/js/Bootstrap.js"></script>
+	<script src="/js/registerValidation.js" type="text/javascript"></script>
+
+	<script>
+		function toggleAddressField() {
+			var selectedOption = document.getElementById("work-input").value;
+			var addressField = document.getElementById("address-field");
+			var addressInput = document.getElementById("address-input");
+
+			if (selectedOption === "Client" || selectedOption === "Hybrid") {
+				addressField.style.display = "block";
+				addressInput.required = true;
+			} else {
+				addressField.style.display = "none";
+				addressInput.required = false;
+			}
+		}
+	</script>
+
+</body>
+
+</html>

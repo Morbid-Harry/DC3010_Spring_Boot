@@ -27,6 +27,8 @@
 								Create User</a></li>
 						<li class="nav-item"><a class="nav-link active" href="#">
 								Dashboard </a></li>
+						<li sec:authorize="hasRole('ROLE_RM')" class="nav-item"><a class="nav-link" href="/manage">
+								Manage Project Roles </a></li>
 					</ul>
 
 					<hr>
@@ -46,7 +48,7 @@
 					
 				</div>
 				<div class="row d-flex flex-wrap flex-md-nowrap p-2">
-					
+
 				</div>
 
 			</main>

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.dc3160.DC3160_Spring_Boot.Dc3160SpringBootApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.876 s - in com.dc3160.DC3160_Spring_Boot.Dc3160SpringBootApplicationTests

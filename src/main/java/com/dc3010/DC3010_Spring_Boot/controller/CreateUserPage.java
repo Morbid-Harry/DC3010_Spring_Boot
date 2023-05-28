@@ -31,7 +31,7 @@ public class CreateUserPage {
 	}
 	
 	@PostMapping("/register")
-	protected ModelAndView doPost(@RequestParam("register-email") String email, @RequestParam("register-first-name") String firstName, @RequestParam("register-last-name") String lastName, @RequestParam("register-user-name") String username,  @RequestParam("register-password") String password, @RequestParam(value = "roles", required = false) String[] selectedOptions)
+	protected ModelAndView doPost(Model model, @RequestParam("register-email") String email, @RequestParam("register-first-name") String firstName, @RequestParam("register-last-name") String lastName, @RequestParam("register-user-name") String username,  @RequestParam("register-password") String password, @RequestParam(value = "roles", required = false) String[] selectedOptions, @RequestParam("register-user-grade") String grade)
 	{
 		//To encode given password
 		PasswordUtils util = new PasswordUtils();
@@ -43,6 +43,7 @@ public class CreateUserPage {
 		newUser.setLastName(lastName);
 		newUser.setLogin(username);
 		newUser.setPassword(util.encode(password));
+		newUser.setGrade(grade);
 		
 		//Add user role based on checkboxes 
 		if(selectedOptions != null)
@@ -63,16 +64,21 @@ public class CreateUserPage {
 		{
 			newUser.setRole("ROLE_USER");
 		}
-
+		
+		ModelAndView modelAndView = new ModelAndView("createuser.html");
+		
 		//Check if user does not exist
 		if(userService.getUserByEmail(email) == null && userService.getUserByLogin(username) == null)
 		{
 			userService.addUser(newUser);
+			model.addAttribute("success", "User created!");
+			return modelAndView;
 		}
 		
-		ModelAndView modelAndView = new ModelAndView("createuser.html");
 		
+		model.addAttribute("error", "User already exists");
 		return modelAndView;
+		
 	}
 	
 }

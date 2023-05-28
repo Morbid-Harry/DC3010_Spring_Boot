@@ -1,0 +1,33 @@
+@charset "ISO-8859-1";
+
+.my-button-group .btn {
+  margin-right: 5px; /* Adjust the spacing between buttons */
+  border-radius: 20px!important; /* Adjust the border radius for rounded buttons */
+  margin-bottom: 5px;
+}
+
+.my-button-group .btn:last-child {
+  margin-right: 0; /* Remove margin for the last button */
+}
+
+
+.my-button-group .btn-primary:hover,.btn-primary:active, .btn-check:checked+.btn
+{
+	background-color: #2B0A3D !important;
+	border-color:  #2B0A3D !important;
+	color: White;
+}
+
+
+.my-button-group .btn-primary{
+    background-color: #ECECEC !important;
+	border-color:  #ECECEC !important;
+	color: #0070AD;
+}
+
+
+
+
+
+
+

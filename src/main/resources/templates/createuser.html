@@ -7,7 +7,7 @@
 
 <link href="/css/Bootstrap.css" type="text/css" rel="stylesheet">
 <link href="/css/theme.css" type="text/css" rel="stylesheet">
-<link href="/css/createUserPage.css" type="text/css" rel="stylesheet">
+<link href="/css/formbutton.css" type="text/css" rel="stylesheet">
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -28,6 +28,8 @@
 							class="nav-link  active" href="#"> Create User</a></li>
 						<li class="nav-item"><a class="nav-link" href="/dashboard">
 								Dashboard </a></li>
+						<li sec:authorize="hasRole('ROLE_RM')" class="nav-item"><a class="nav-link" href="/manage">
+								Manage Project Roles </a></li>
 					</ul>
 
 					<hr>
@@ -44,60 +46,89 @@
 
 				</div>
 				<div class="row justify-content-center p-2">
-					<div class="card my-3" style="width: 300px;">
+					<div class="card my-3" style="width: 500px;">
 						<div class="card-body">
 							<h5 class="card-title">New User Form</h5>
 							<form class="needs-validation" method="POST" action="/register"
 								novalidate>
-								<div class="px-2 mb-2" th:if="${exists != null}">
-									<div class="alert alert-danger" role="alert">
-										<p th:text="${exists}"></p>
+								<div th:if="${success != null}" class= "px-2 mb-2">
+											<div class="alert alert-success alert-dismissible fade show"role="alert">
+		  										User Created!
+		  										<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+		  									</div>
+		  								</div>
+		  								<div th:if="${error != null}" class= "px-2 mb-2">
+											<div class="alert alert-danger alert-dismissible fade show"role="alert">
+		  										User with this email or username already exists!
+		  										<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+		  									</div>
+		  								</div>
+								<div class="mb-2 row">
+									<div class="col-6">
+										<label for="first-name-input" class="form-label">First
+											name</label> <input type="text" class="form-control"
+											id="first-name-input" name="register-first-name"
+											placeholder="John" autocomplete="given-name"
+											pattern="[A-za-z]+" required>
+										<div class="valid-feedback"></div>
+										<div class="invalid-feedback">Please enter users first
+											name</div>
+									</div>
+									<div class="col-6">
+										<label for="last-name-input" class="form-label">Last
+											name</label> <input type="text" class="form-control"
+											id="Last-name-input" name="register-last-name"
+											placeholder="Smith" autocomplete="family-name"
+											pattern="[A-za-z]+" required>
+										<div class="valid-feedback"></div>
+										<div class="invalid-feedback">Please enter users last
+											name</div>
+									</div>
+
+
+								</div>
+								<div class="mb-2 row">
+										<label for="email-input" class="form-label">Email
+											address</label> <input type="email" class="form-control"
+											id="email-input" name="register-email" autocomplete="email"
+											placeholder="name@example.com" required>
+										<div class="valid-feedback"></div>
+										<div class="invalid-feedback">Please enter a valid email</div>
+								</div>
+								<div class="mb-2 row">
+									<label for="grade-input" class="form-label">User Grade Level</label>
+									<select class="form-select" aria-label="Default select example" id = "grade-input" name="register-user-grade">
+										<option value="A1">A1</option>
+										<option value="A2">A2</option>
+										<option value="A3">A3</option>
+										<option value="A4">A4</option>
+										<option value="A5">A5</option>
+										<option value="A6">A6</option>
+										<option value="A7">A7</option>
+										<option value="A8">A8</option>
+										<option value="A9">A9</option>
+										<option value="A10">A10</option>
+									</select>
+								</div>
+								<div class="mb-2 row">
+									<div class="col-6">
+										<label for="user-name-input" class="form-label">Username</label>
+										<input type="text" class="form-control" id="user-name-input"
+											name="register-user-name" autocomplete="username"
+											placeholder="Username" required>
+										<div class="valid-feedback"></div>
+										<div class="invalid-feedback">Please enter a username</div>
+									</div>
+									<div class="col-6">
+										<label for="password-input" class="form-label">Password</label>
+										<input type="password" class="form-control"
+											id="password-input" name="register-password"
+											autocomplete="new-password" placeholder="Password" required>
+										<div class="valid-feedback"></div>
+										<div class="invalid-feedback">Please enter a password</div>
 									</div>
 								</div>
-								<div class="mb-2">
-									<label for="first-name-input" class="form-label">First
-										name</label> <input type="text" class="form-control"
-										id="first-name-input" name="register-first-name"
-										placeholder="John" autocomplete="given-name"
-										pattern="[A-za-z]+" required>
-									<div class="valid-feedback"></div>
-									<div class="invalid-feedback">Please enter users first
-										name</div>
-								</div>
-								<div class="mb-2">
-									<label for="last-name-input" class="form-label">Last
-										name</label> <input type="text" class="form-control"
-										id="Last-name-input" name="register-last-name"
-										placeholder="Smith" autocomplete="family-name"
-										pattern="[A-za-z]+" required>
-									<div class="valid-feedback"></div>
-									<div class="invalid-feedback">Please enter users last
-										name</div>
-								</div>
-								<div class="mb-2">
-									<label for="email-input" class="form-label">Email
-										address</label> <input type="email" class="form-control"
-										id="email-input" name="register-email" autocomplete="email"
-										placeholder="name@example.com" required>
-									<div class="valid-feedback"></div>
-									<div class="invalid-feedback">Please enter a valid email</div>
-								</div>
-								<div class="mb-2">
-									<label for="user-name-input" class="form-label">Username</label> <input type="text" class="form-control"
-										id="user-name-input" name="register-user-name" autocomplete="username"
-										placeholder="Username" required>
-									<div class="valid-feedback"></div>
-									<div class="invalid-feedback">Please enter a username</div>
-								</div>
-								<div class="mb-2">
-									<label for="password-input" class="form-label">Password</label>
-									<input type="password" class="form-control" id="password-input"
-										name="register-password" autocomplete="new-password"
-										placeholder="Password" required>
-									<div class="valid-feedback"></div>
-									<div class="invalid-feedback">Please enter a password</div>
-								</div>
-								<div class="mb-2">
+								<div class="mb-2 row">
 									<div class="form-check">
 										<input type="checkbox" class="form-check-input" id="option1"
 											name="roles" value="Admin"> <label
@@ -106,7 +137,8 @@
 									<div class="form-check">
 										<input type="checkbox" class="form-check-input" id="option2"
 											name="roles" value="RM"> <label
-											class="form-check-label" for="option2">Is Resource Manager?</label>
+											class="form-check-label" for="option2">Is Resource
+											Manager?</label>
 									</div>
 								</div>
 								<div class="text-center">
@@ -125,27 +157,27 @@
 
 	<script src="/js/Bootstrap.js"></script>
 	<script src="/js/registerValidation.js" type="text/javascript"></script>
-	
+
 	<!-- If "Is admin?" checkbox is clicked then this JS also select and disable the "Is Resource Manager?" as an Admin has all user roles -->
 	<script>
-	    const option1 = document.getElementById("option1");
-	    const option2 = document.getElementById("option2");
-	
-	    option1.addEventListener("change", function() {
-	        if (this.checked) {
-	            option2.checked = true;
-	            option2.disabled = true;
-	        } else {
-	            option2.disabled = false;
-	        }
-	    });
-	
-	    option2.addEventListener("change", function() {
-	        if (option1.checked && !this.checked) {
-	            this.checked = true;
-	        }
-	    });
-		</script>
+		const option1 = document.getElementById("option1");
+		const option2 = document.getElementById("option2");
+
+		option1.addEventListener("change", function() {
+			if (this.checked) {
+				option2.checked = true;
+				option2.disabled = true;
+			} else {
+				option2.disabled = false;
+			}
+		});
+
+		option2.addEventListener("change", function() {
+			if (option1.checked && !this.checked) {
+				this.checked = true;
+			}
+		});
+	</script>
 
 </body>
 
