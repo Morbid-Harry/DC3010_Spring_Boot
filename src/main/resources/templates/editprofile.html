@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<meta charset="ISO-8859-1">
+<title>Edit your profile</title>
+
+<link href="/css/Bootstrap.css" type="text/css" rel="stylesheet">
+<link href="/css/theme.css" type="text/css" rel="stylesheet">
+<link href="/css/formbutton.css" type="text/css" rel="stylesheet">
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+<body class="bg-gray-100">
+
+	<div th:replace="~{header.html :: header}"></div>
+
+	<div class="container-fluid">
+		<div class="row">
+			<nav id="sidebarMenu"
+				class="col-md-3 col-lg-2 d-md-block sidebar collapse"
+				style="max-width: 150px">
+				<div id="sidebar-items" class="sticky-top p-2">
+					<ul class="sticky-item nav nav-pills flex-column mb-auto">
+						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
+							class="nav-link" href="/create"> Create User</a></li>
+						<li class="nav-item"><a class="nav-link  active" href="#">
+								Profile </a></li>
+						<li class="nav-item"><a class="nav-link" href="/dashboard">
+								Dashboard </a></li>
+						<li sec:authorize="hasRole('ROLE_RM')" class="nav-item"><a
+							class="nav-link" href="/manage"> Manage Project Roles </a></li>
+					</ul>
+
+					<hr>
+					<ul class="nav nav-pills flex-column mb-auto">
+						<li class="nav-item"><a class="nav-link" href="./logout">Sign-out</a></li>
+					</ul>
+				</div>
+			</nav>
+
+			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+				<div
+					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+					<h1 class="h2" th:inline="text">Edit your profile here</h1>
+
+				</div>
+				<div class="row d-flex flex-wrap flex-md-nowrap p-2">
+					<div class="col">
+						<div class="card" style="width: 500px;">
+							<div class="card-body">
+								<h5 class="card-title">Your Profile</h5>
+								<form class="needs-validation" method="POST"
+									action="/update/user/details" novalidate>
+									<div th:if="${detailssuccess}" class="px-2 mb-2">
+										<div class="alert alert-success alert-dismissible fade show"
+											role="alert">
+											Profile Updated!
+											<button type='button' class='btn-close'
+												data-bs-dismiss='alert' aria-label='Close'></button>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<div class="col-6">
+											<label for="first-name-input" class="form-label">First
+												name</label> <input type="text" class="form-control"
+												id="first-name-input" name="update-first-name"
+												placeholder="John" autocomplete="given-name"
+												pattern="[A-Za-z]+" th:value="${user.firstName}" required>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter a valid first
+												name</div>
+										</div>
+										<div class="col-6">
+											<label for="last-name-input" class="form-label">Last
+												name</label> <input type="text" class="form-control"
+												id="Last-name-input" name="update-last-name"
+												placeholder="Smith" autocomplete="family-name"
+												pattern="[A-Za-z]+" th:value="${user.lastName}" required>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter a valid last
+												name</div>
+										</div>
+
+
+									</div>
+									<div class="mb-2 row">
+										<div class="col">
+											<label for="email-input" class="form-label">Email
+												address</label> <input type="email" class="form-control"
+												id="email-input" name="update-email" autocomplete="email"
+												placeholder="name@example.com" th:value="${user.email}"
+												disabled required>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter a valid
+												email</div>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<div class="col">
+											<label for="grade-input" class="form-label">Your
+												Grade Level</label> <select class="form-select"
+												aria-label="Default select example" id="grade-input"
+												name="update-user-grade">
+												<option th:each="gradeOption : ${grades}"
+													th:value="${gradeOption}" th:text="${gradeOption}"
+													th:attr="selected=${gradeOption == user.grade}"></option>
+											</select>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<div class="col">
+											<label for="user-name-input" class="form-label">Username</label>
+											<input type="text" class="form-control" id="user-name-input"
+												name="update-user-name" autocomplete="username"
+												placeholder="Username" th:value="${user.login}" disabled
+												required>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter a username</div>
+										</div>
+									</div>
+									<div class="text-center">
+										<button id="update-details" type="submit"
+											class="btn btn-primary">Update Details</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="card" style="width: 500px;">
+							<div class="card-body">
+								<h5 class="card-title">Change your password</h5>
+								<form class="needs-validation" method="POST"
+									action="/update/user/password" novalidate>
+									<div th:if="${passwordsuccess}" class="px-2 mb-2">
+										<div class="alert alert-success alert-dismissible fade show"
+											role="alert">
+											Password Updated!
+											<button type='button' class='btn-close'
+												data-bs-dismiss='alert' aria-label='Close'></button>
+										</div>
+									</div>
+									<div th:if="${passwordexistingmatchingfailure}" class="px-2 mb-2">
+										<div class="alert alert-danger alert-dismissible fade show"
+											role="alert">
+											Current Password given was Incorrect!
+											<button type='button' class='btn-close'
+												data-bs-dismiss='alert' aria-label='Close'></button>
+										</div>
+									</div>
+									<div th:if="${passwordpairmatchingfailure}" class="px-2 mb-2">
+										<div class="alert alert-danger alert-dismissible fade show"
+											role="alert">
+											New Password and Confirm password are not the same!
+											<button type='button' class='btn-close'
+												data-bs-dismiss='alert' aria-label='Close'></button>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<div class="col">
+											<label for="current-password-input" class="form-label">Current
+												Password</label> <input type="password" class="form-control"
+												id="current-password-input" name="current-password"
+												autocomplete="current-password" placeholder="Current Password" required>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter your current password</div>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<div class="col">
+											<label for="new-password-input" class="form-label">New Password</label> <input type="password" class="form-control"
+												id="new-password-input" name="new-password"
+												autocomplete="new-password" placeholder="New Password" required>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Please enter a password</div>
+										</div>
+									</div>
+									<div class="mb-2 row">
+										<div class="col">
+											<label for="confrim-password-input" class="form-label">Confrim New Password</label> <input type="password" class="form-control"
+												id="confirm-password-input" name="confirm-password"
+												autocomplete="new-password" placeholder="Confirm New Password" required>
+											<div class="valid-feedback"></div>
+											<div class="invalid-feedback">Must match new password!</div>
+										</div>
+									</div>
+									<div class="text-center">
+										<button id="update-password" type="submit"
+											class="btn btn-primary">Update</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</main>
+
+		</div>
+	</div>
+
+	<script src="/js/Bootstrap.js"></script>
+	<script src="/js/registerValidation.js" type="text/javascript"></script>

@@ -27,6 +27,8 @@
 					<ul class="sticky-item nav nav-pills flex-column mb-auto">
 						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
 							class="nav-link" href="/create"> Create User</a></li>
+						<li class="nav-item"><a class="nav-link" href="/profile">
+								Profile </a></li>	
 						<li class="nav-item"><a class="nav-link" href="/dashboard">
 								Dashboard </a></li>
 						<li sec:authorize="hasRole('ROLE_RM')" class="nav-item"><a
