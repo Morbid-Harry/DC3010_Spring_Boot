@@ -35,7 +35,7 @@
 
 					<hr>
 					<ul class="nav nav-pills flex-column mb-auto">
-						<li class="nav-item"><a class="nav-link" href="/logout">Signout</a></li>
+						<li class="nav-item"><a class="nav-link" href="/logout">Sign-out</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -113,8 +113,7 @@
 												End Date</label> <input type="date" max="9999-12-31"
 												class="form-control" id="end-date-input" name="end-date">
 											<div class="valid-feedback"></div>
-											<div class="invalid-feedback">Please enter a valid date
-												in the form dd/mm/yyyy</div>
+											<div class="invalid-feedback">End date cannot be before the start date</div>
 										</div>
 									</div>
 									<div class="mb-2 row">
@@ -160,7 +159,7 @@
 
 									</div>
 									<div class="text-center">
-										<button id="sign-up" type="submit" class="btn btn-primary">Create
+										<button id="create-project" type="submit" class="btn btn-primary">Create
 											Project Role</button>
 									</div>
 								</form>
@@ -177,14 +176,15 @@
 
 	<script src="/js/Bootstrap.js"></script>
 	<script src="/js/registerValidation.js" type="text/javascript"></script>
-
+	
+	<!--This script shows the address field when either client site or hybrid is selected as a work location and also makes it required-->
 	<script>
 		function toggleAddressField() {
 			var selectedOption = document.getElementById("work-input").value;
 			var addressField = document.getElementById("address-field");
 			var addressInput = document.getElementById("address-input");
 
-			if (selectedOption === "Client" || selectedOption === "Hybrid") {
+			if (selectedOption === "Client_Site" || selectedOption === "Hybrid") {
 				addressField.style.display = "block";
 				addressInput.required = true;
 			} else {
@@ -192,6 +192,36 @@
 				addressInput.required = false;
 			}
 		}
+	</script>
+	
+	<!--Script to warn user from adding an end date before the start date-->
+	<script>
+	// Get references to the input fields
+	var startDateInput = document.getElementById('start-date-input');
+	var endDateInput = document.getElementById('end-date-input');
+	
+	// Add event listener for form submission
+	document.querySelector('form').addEventListener('submit', function(e) {
+	  // Check if the form is valid
+	  if (!this.checkValidity()) {
+	    e.preventDefault(); // Prevent form submission
+	    e.stopPropagation(); // Stop event propagation
+	  }
+
+	  this.classList.add('was-validated');
+	  
+	  // Get the selected dates
+	  var startDate = new Date(startDateInput.value);
+	  var endDate = new Date(endDateInput.value);
+
+	  // Check if the start date is after the end date
+	  if (startDate > endDate) {
+	    e.preventDefault(); // Prevent form submission
+	    endDateInput.setCustomValidity('incorrect');
+	  } else {
+	    endDateInput.setCustomValidity('');
+	  }
+	});
 	</script>
 
 </body>

@@ -32,8 +32,10 @@ public class ManageProjectPage {
 	ModelAndView doGet(Model model)
 	{
 		
+		//Get the list of tools that is in the tool table
 		List<Tool> toolRecords = toolService.findAll();
 		
+		//add to model to be displayed as tags in manage projects page
 		model.addAttribute("toolRecords", toolRecords);
 		
 		ModelAndView modelAndView = new ModelAndView("manageproject.html");
@@ -54,19 +56,14 @@ public class ManageProjectPage {
 		newProject.setProjectName(projectName);
 		newProject.setGrade(grade);
 		
-		if(startDate!=null)
-		{
-			newProject.setStartDate(Date.valueOf(startDate));
-		}
-		
-		if(endDate!=null)
-		{
-			newProject.setEndDate(Date.valueOf(endDate));
-		}
-		
-		
-		
-		//Get Enum value of work location amd add to bean
+		//If user does not select a value to dates then form sends an empty string check this before trying to add to bean
+		if(!startDate.equalsIgnoreCase("")) {
+		newProject.setStartDate(Date.valueOf(startDate)); }
+		  
+		if(!endDate.equalsIgnoreCase("")) {
+		newProject.setEndDate(Date.valueOf(endDate)); }
+		 
+		//Get Enum value of work location and add to bean
 		WorkLocation location = WorkLocation.valueOf(workLocation);
 		newProject.setWorkLocation(location);
 		
@@ -77,11 +74,9 @@ public class ManageProjectPage {
 		}
 		
 		newProject.setGeneralDescription(generalDescription);
-		
-
-		
-		//If tools/software have been selected
-		if (toolsUsed.length > 0) {
+			
+		//If tools/software tags have been selected
+		if (toolsUsed != null && toolsUsed.length > 0) {
 			//Prepare set to add to the project
 			Set<Tool> listOfToolsUsed = new HashSet<Tool>();
             for (String tool : toolsUsed) {

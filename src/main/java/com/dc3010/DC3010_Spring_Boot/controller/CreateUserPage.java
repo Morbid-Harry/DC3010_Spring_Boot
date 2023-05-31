@@ -78,7 +78,6 @@ public class CreateUserPage {
 		
 		model.addAttribute("error", "User already exists");
 		return modelAndView;
-		
 	}
 	
 }

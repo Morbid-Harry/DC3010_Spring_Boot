@@ -24,7 +24,7 @@ public class ToolService {
 	public List<Tool> findAll()
 	{
 		List<Tool> tools = new ArrayList<>();
-		//Add all the tools found from the iterablie to a list
+		//Add all the tools found from the iterable to a list
 		toolRepo.findAll().forEach(tools::add);
 		 
 		return tools; 
