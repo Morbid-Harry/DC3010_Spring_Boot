@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html 
-    xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 
 <meta charset="ISO-8859-1">
@@ -8,34 +7,37 @@
 
 <link href="/css/Bootstrap.css" type="text/css" rel="stylesheet">
 <link href="/css/theme.css" type="text/css" rel="stylesheet">
+<link href="/css/dashboardPage.css" type="text/css" rel="stylesheet">
+<link href="/css/toolsbutton.css" type="text/css" rel="stylesheet">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 </head>
 <body class="bg-gray-100">
 
-	<div th:replace="~{header.html :: header}" ></div>
+	<div th:replace="~{header.html :: header}"></div>
 
 	<div class="container-fluid">
 		<div class="row">
 			<nav id="sidebarMenu"
 				class="col-md-3 col-lg-2 d-md-block sidebar collapse"
 				style="max-width: 150px">
-				<div  id ="sidebar-items" class="sticky-top p-2">
+				<div id="sidebar-items" class="sticky-top p-2">
 					<ul class="sticky-item nav nav-pills flex-column mb-auto">
-						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a class="nav-link" href="/create">
-								Create User</a></li>
+						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
+							class="nav-link" href="/create"> Create User</a></li>
 						<li class="nav-item"><a class="nav-link" href="/profile">
-								Profile </a></li>			
+								Profile </a></li>
 						<li class="nav-item"><a class="nav-link active" href="#">
 								Dashboard </a></li>
-						<li sec:authorize="hasRole('ROLE_RM')" class="nav-item"><a class="nav-link" href="/manage">
-								Manage Project Roles </a></li>
+						<li sec:authorize="hasRole('ROLE_RM')" class="nav-item"><a
+							class="nav-link" href="/manage"> Manage Project Roles </a></li>
 					</ul>
 
 					<hr>
 					<ul class="nav nav-pills flex-column mb-auto">
-						<li class="nav-item"><a class="nav-link" href="/logout" >Sign-out</a></li>
+						<li class="nav-item"><a class="nav-link" href="/logout">Sign-out</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -43,23 +45,143 @@
 			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 				<div
 					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-					<h1 class="h2" th:inline="text">
-						Welcome to your Dashboard
-						[[${user.firstName}]]
-					</h1>
-					
-				</div>
-				<div class="row d-flex flex-wrap flex-md-nowrap p-2">
+					<h1 class="h2" th:inline="text">Welcome to your Dashboard
+						[[${user.firstName}]]</h1>
 
 				</div>
 
+				<div class="row d-flex flex-wrap p-2">
+					<div class="col-lg-4 col-sm-6" th:each="record : ${projectRecords}">
+						<div class="card my-2">
+							<div class="card-header">
+								<h5 class="card-title">[[${record.companyName}]] :
+									[[${record.projectName}]]</h5>
+							</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-4">
+										<p>
+											<strong>Start Date: </strong>[[${record.startDate}]]
+										</p>
+									</div>
+									<div class="col-4">
+										<p>
+											<strong>End Date: </strong>[[${record.endDate}]]
+										</p>
+									</div>
+									<div class="col-4">
+										<p>
+											<strong>Grade Required: </strong>[[${record.grade}]]
+										</p>
+									</div>
+								</div>
+								<div class="row">
+									<hr>
+								</div>
+								<div class="row">
+									<div class="col">
+										<p>
+											<strong>Tools Used</strong>
+										</p>
+									</div>
+								</div>
+								<div class="row"  th:if="${not #lists.isEmpty(record.associatedTools)}">
+									<div class="my-button-group flex-wrap">
+										<span th:each="tool : ${record.associatedTools}"> <input
+											type="checkbox" class="btn-check tags" th:id="${tool.toolID} + '-' +  ${record.projectID}"
+											autocomplete="off"
+											name="tools-used" checked disabled> <label
+											class="btn btn-primary" th:for="${tool.toolID} + '-' +  ${record.projectID}">[[${tool.toolName}]]</label>
+										</span>
+									</div>
+								</div>
+								<div class="row" th:if="${#lists.isEmpty(record.associatedTools)}">
+									<div class="col">
+										<p>
+											<strong>None Available</strong>
+										</p>
+									</div>
+								</div>
+								<div class="row mt-5">
+                					<div class="col">				
+                    					<a th:href="@{/findOne/{id}(id=${record.projectID})}" type="button" class="btn btn-primary eBtn" >View Details</a>         
+                					</div>
+            					</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</main>
+			
 
 		</div>
 	</div>
 
-	<script src="/js/Bootstrap.js"></script>
-	
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel" ></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </body>
+
+<script src="/js/Bootstrap.js"></script>
+
+<!--Handles to loading of the modal and the project specific data via Asyncronous AJAX call -->	
+<script type="text/javascript">
+$(document).ready(function() {
+	  $('.eBtn').click(function(e) {
+		//Prevent the default action of following the link
+	    e.preventDefault(); 
+	    
+	 	//Get the URL from the href attribute of the <a> tag
+	    var url = $(this).attr('href'); 
+	 	
+	 	//Asynchronous call to dashboard controller
+	    $.ajax({
+	      type: 'GET',
+	      url: url,
+	      success: function(response) {
+	    	  
+	    	  //Get the project data that is stored in the response
+	    	  var project = response.project;
+	    	  
+	    	  //Get the tool data that is stored in the response
+	    	  var tools = response.tools;
+	    	  
+	        // Handle the response data here
+	        console.log(project);
+	        console.log(tools);
+	        
+	        //Show modal on success
+			$('#exampleModal').modal('show');
+	        
+	        $('.modal-title').text(project.companyName)
+			
+	        
+	      },
+	      error: function(xhr, status, error) {
+	        //Just print errors to the console
+	        console.error(error);
+	      }
+	    });
+	  });
+	});
+</script>
+
 
 </html>

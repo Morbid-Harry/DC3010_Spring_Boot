@@ -155,8 +155,7 @@
 											<span th:each="record : ${toolRecords}">
 												<input  type="checkbox" class="btn-check" th:id=${record.toolID} autocomplete="off" th:value="${record.toolName}" name="tools-used">
 												<label class="btn btn-primary" th:for="${record.toolID}">[[${record.toolName}]]</label>
-											</span>
-														
+											</span>			
 										</div>
 
 									</div>

@@ -25,6 +25,11 @@
 	color: #0070AD;
 }
 
+/*Prevent buttons losing color when disabled */
+.btn-check[disabled]+.btn {
+        opacity: 1;
+    }
+
 
 
 

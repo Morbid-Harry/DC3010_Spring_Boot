@@ -1,0 +1,16 @@
+@charset "ISO-8859-1";
+
+.card-body
+{
+	text-align: center;
+
+}
+
+.card-header
+{
+	text-align: center;
+}
+
+h5 {
+	color:#0070AD!important
+}
