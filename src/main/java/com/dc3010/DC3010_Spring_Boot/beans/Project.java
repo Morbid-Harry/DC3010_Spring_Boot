@@ -1,7 +1,6 @@
 package com.dc3010.DC3010_Spring_Boot.beans;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -14,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity(name = "project")
 public class Project {
@@ -52,6 +53,10 @@ public class Project {
 			  joinColumns = @JoinColumn(name = "project_id"), 
 			  inverseJoinColumns = @JoinColumn(name = "tool_id"))
 	Set<Tool> associatedTools;
+	
+	@ManyToOne(optional = false)
+    @JoinColumn(name = "created_By")
+    private User createdBy;
 
 	public int getProjectID() {
 		return projectID;
@@ -132,10 +137,13 @@ public class Project {
 	public void setAssociatedTools(Set<Tool> associatedTools) {
 		this.associatedTools = associatedTools;
 	}
-	
-	
-	
-	
-	
+
+	public User getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(User createdBy) {
+		this.createdBy = createdBy;
+	}
 	
 }

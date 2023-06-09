@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dc3010.DC3010_Spring_Boot.Service.EmailService;
 import com.dc3010.DC3010_Spring_Boot.Service.ProjectService;
 import com.dc3010.DC3010_Spring_Boot.Service.ToolService;
 import com.dc3010.DC3010_Spring_Boot.Service.UserService;
@@ -36,7 +37,7 @@ public class Dashboard {
 	private ProjectService projectService;
 	
 	@Autowired
-	private ToolService toolService;
+	private EmailService emailService;
 	
 		/**
 		 * Returns the view dashboard.html to the user when /dashboard is called
@@ -72,6 +73,31 @@ public class Dashboard {
 			wrapper.setTools();
 			
 			return new ResponseEntity<ResponseWrapper>(wrapper, HttpStatus.OK);
-		}		
+		}
+		
+		@GetMapping("/show-interest/{userId}/{projectId}")
+		protected ResponseEntity<Void> sendInterestEmail(@PathVariable("userId") Integer resourceManagerId, @PathVariable("projectId") Integer projectId,@AuthenticationPrincipal SecUserDetails userDetails)
+		{
+			Project projectInterestedIn = projectService.findOne(projectId);
+			User resourceManager = userService.getUserById(resourceManagerId);
+			User loggedInUser = userService.getUserByLogin(userDetails.getUsername());
+			
+	
+			//Create the message to put in email
+			String message = String.format("%s %s is interested in the following role:\n\nClient: %s\nProject: %s\nStart Date: %s\nEnd Date: %s\nGrade Required: %s\n\nPlease reach them via email at: %s",
+				    loggedInUser.getFirstName(),
+				    loggedInUser.getLastName(),
+				    projectInterestedIn.getCompanyName(),
+				    projectInterestedIn.getProjectName(),
+				    projectInterestedIn.getStartDate(),
+				    projectInterestedIn.getEndDate(),
+				    projectInterestedIn.getGrade(),
+				    loggedInUser.getEmail()
+				);
+			
+			emailService.sendEmail(resourceManager.getEmail(), "Interested in Project role", message);
+	
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
 	
 }

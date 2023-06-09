@@ -35,6 +35,12 @@ public class UserService implements UserDetailsService{
 		return userRepo.findUserByEmail(email);
 	}
 	
+	
+	public User getUserById(int id)
+	{
+		return userRepo.findUserByUserID(id);
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 		User user = userRepo.findUserByLogin(username);

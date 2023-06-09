@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,11 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.dc3010.DC3010_Spring_Boot.Service.ProjectService;
 import com.dc3010.DC3010_Spring_Boot.Service.ToolService;
+import com.dc3010.DC3010_Spring_Boot.Service.UserService;
 import com.dc3010.DC3010_Spring_Boot.beans.Project;
 import com.dc3010.DC3010_Spring_Boot.beans.Tool;
 import com.dc3010.DC3010_Spring_Boot.beans.WorkLocation;
+import com.dc3010.DC3010_Spring_Boot.util.SecUserDetails;
 
 @Controller
 public class ManageProjectPage {
@@ -27,6 +30,9 @@ public class ManageProjectPage {
 	
 	@Autowired
 	private ToolService toolService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("/manage")
 	ModelAndView doGet(Model model)
@@ -45,7 +51,7 @@ public class ManageProjectPage {
 	}
 	
 	@PostMapping("/create/project")
-	RedirectView createProject(RedirectAttributes redirectAttributes, @RequestParam("client-name") String clientName, @RequestParam("project-name") String projectName, @RequestParam("project-grade") String grade, 
+	RedirectView createProject(@AuthenticationPrincipal SecUserDetails userDetails, RedirectAttributes redirectAttributes, @RequestParam("client-name") String clientName, @RequestParam("project-name") String projectName, @RequestParam("project-grade") String grade, 
 			@RequestParam(value = "start-date", required = false) String startDate, @RequestParam(value = "end-date", required = false) String endDate,
 			@RequestParam("work-location") String workLocation, @RequestParam(value = "address", required = false) String address, @RequestParam("general-description") String generalDescription, @RequestParam(value = "tools-used", required = false) String[] toolsUsed)
 	{
@@ -86,6 +92,9 @@ public class ManageProjectPage {
             //Add the listOfTools to the project
             newProject.setAssociatedTools(listOfToolsUsed);
 		}
+		
+		//Set who the project was created by
+		newProject.setCreatedBy(userService.getUserByLogin(userDetails.getUsername()));
 		
 		//Finally Save the project
 		projectService.addProject(newProject);

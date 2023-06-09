@@ -1,10 +1,13 @@
 package com.dc3010.DC3010_Spring_Boot.beans;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity(name = "user")
 public class User{
@@ -34,7 +37,7 @@ public class User{
 	
 	@Column(name="grade")
 	private String grade;
-	
+		
 	public User()
 	{
 		
@@ -104,5 +107,6 @@ public class User{
 	public void setGrade(String grade) {
 		this.grade = grade;
 	}
+
 	
 }

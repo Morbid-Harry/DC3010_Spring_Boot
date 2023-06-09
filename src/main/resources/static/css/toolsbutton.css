@@ -1,13 +1,13 @@
 @charset "ISO-8859-1";
 
 .my-button-group .btn {
-  margin-right: 5px; /* Adjust the spacing between buttons */
-  border-radius: 20px!important; /* Adjust the border radius for rounded buttons */
+  margin-right: 5px;
+  border-radius: 20px!important;
   margin-bottom: 5px;
 }
 
 .my-button-group .btn:last-child {
-  margin-right: 0; /* Remove margin for the last button */
+  margin-right: 0;
 }
 
 
@@ -31,8 +31,14 @@
     }
 
 
+.modal-button-group .btn {
+  border-radius: 20px!important;
+  margin-bottom: 5px;
+}
 
-
+.modal-button-group .btn:last-child {
+  margin-right: 0;
+}
 
 
 
