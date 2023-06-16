@@ -39,6 +39,9 @@ public class Dashboard {
 	@Autowired
 	private EmailService emailService;
 	
+	@Autowired
+	private ToolService toolService;
+	
 		/**
 		 * Returns the view dashboard.html to the user when /dashboard is called
 		 * @param model the spring model used to add attributes to the session
@@ -55,10 +58,13 @@ public class Dashboard {
 			
 			ModelAndView modelAndView = new ModelAndView("dashboard.html");
 			
-			
 			List<Project> allProjects = projectService.findAll();
 			
+			//All projects to display to the user
 			model.addAttribute("projectRecords", allProjects);
+			
+			//All the tools that are potentially used by a project used for the tools filter
+			model.addAttribute("allTools", toolService.findAll());
 			
 			return modelAndView;
 		}
