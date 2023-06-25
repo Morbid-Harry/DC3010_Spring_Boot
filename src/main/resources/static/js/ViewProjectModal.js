@@ -26,16 +26,89 @@ $(document)
 									/*To check data contents in webconsole*/
 									console.log(project);
 									console.log(tools);
+							
 
-
-									// Select the existing button in the modal footer
+									// Select the existing show interest button in the modal footer
 									var showinterestbutton = document.getElementById("show-interest");
+									
+									// Select the add-favourite button in the modal footer
+									var favouritebutton = document.getElementById("add-favourites");
+									
+									// Select the remove-favourite button in the modal footer
+									var removefavouritebutton = document.getElementById("remove-favourites");
 									
 									//Get the resource managers id that raised the project
 									var userId = project.createdBy.userID;
 									
 									//Get the projects id 
 									var projectId = project.projectID
+									
+									
+									function favouriteProjectHandler()
+									{
+										fetch("/favourite/" + projectId, {method: 'POST'})
+											.then(function(response) {
+												// Check if the response was successful
+												if (response.ok) {
+														var modalBody = document.querySelector('.modal-body');
+												
+														// Create the alert message
+														var alert = document.createElement('div');
+														alert.className = 'alert alert-success alert-dismissible fade show';
+														alert.role = 'alert';
+														alert.innerHTML = "Add to your Favourites!" + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+														
+														// Insert the new alert at the top of the modal body
+														modalBody.insertBefore(alert, modalBody.firstChild);
+														
+												} else {
+														var modalBody = document.querySelector('.modal-body');
+												
+														// Create the alert message
+														var alert = document.createElement('div');
+														alert.className = 'alert alert-danger alert-dismissible fade show';
+														alert.role = 'alert';
+														alert.innerHTML = "This project is already in your favorites!" + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+														
+														// Insert the new alert at the top of the modal body
+														modalBody.insertBefore(alert, modalBody.firstChild);
+												}
+											});
+									}
+									
+									function removeFavouriteProjectHandler()
+									{
+										fetch("/favourite/remove/" + projectId, {method: 'POST'})
+											.then(function(response) {
+												// Check if the response was successful
+												if (response.ok) {
+														var modalBody = document.querySelector('.modal-body');
+												
+														// Create the alert message
+														var alert = document.createElement('div');
+														alert.className = 'alert alert-success alert-dismissible fade show';
+														alert.role = 'alert';
+														alert.innerHTML = "Removed from your Favourites" + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+														
+														// Insert the new alert at the top of the modal body
+														modalBody.insertBefore(alert, modalBody.firstChild);
+														
+												} else {
+														var modalBody = document.querySelector('.modal-body');
+												
+														// Create the alert message
+														var alert = document.createElement('div');
+														alert.className = 'alert alert-danger alert-dismissible fade show';
+														alert.role = 'alert';
+														alert.innerHTML = "Failed to remove from your Favourites" + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+														
+														// Insert the new alert at the top of the modal body
+														modalBody.insertBefore(alert, modalBody.firstChild);
+												}
+											});
+									}
+									
+									
 									
 									// Add an event listener to handle the click event
 									function showInterestHandler() {
@@ -70,7 +143,17 @@ $(document)
 											});
 									}
 
-									showinterestbutton.addEventListener("click", showInterestHandler);			
+									showinterestbutton.addEventListener("click", showInterestHandler);
+									
+									if(favouritebutton != null)
+									{
+										favouritebutton.addEventListener("click", favouriteProjectHandler);
+									}
+									
+									if(removefavouritebutton != null)
+									{
+										removefavouritebutton.addEventListener("click", removeFavouriteProjectHandler);
+									}		
 									
 									$('.modal-title').text(project.companyName);
 
@@ -166,6 +249,16 @@ $(document)
 									$('.modal').on("hide.bs.modal", function() {
 										// Remove the event listener when the modal is hidden
 										showinterestbutton.removeEventListener("click", showInterestHandler);
+										
+										if(favouritebutton != null)
+										{
+											favouritebutton.removeEventListener("click", favouriteProjectHandler);
+										}
+										
+										if(removefavouritebutton != null)
+										{
+											removefavouritebutton.removeEventListener("click", removeFavouriteProjectHandler);
+										}	
 									});
 
 								},

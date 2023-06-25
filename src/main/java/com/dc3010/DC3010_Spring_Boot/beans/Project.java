@@ -1,7 +1,10 @@
 package com.dc3010.DC3010_Spring_Boot.beans;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -57,7 +60,16 @@ public class Project {
 	@ManyToOne(optional = false)
     @JoinColumn(name = "created_By")
     private User createdBy;
-
+	
+	
+	@ManyToMany
+	@JoinTable(
+			  name = "favourites", 
+			  joinColumns = @JoinColumn(name = "favourite_project_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "user_id"))
+	@JsonIgnore
+	List<User> favourtiedBy;
+	
 	public int getProjectID() {
 		return projectID;
 	}
@@ -145,5 +157,15 @@ public class Project {
 	public void setCreatedBy(User createdBy) {
 		this.createdBy = createdBy;
 	}
+
+	public List<User> getFavourtiedBy() {
+		return favourtiedBy;
+	}
+
+	public void setFavourtiedBy(List<User> favourtiedBy) {
+		this.favourtiedBy = favourtiedBy;
+	}
+	
+	
 	
 }

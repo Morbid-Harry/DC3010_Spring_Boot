@@ -3,7 +3,7 @@
 <head>
 
 <meta charset="ISO-8859-1">
-<title>Project Dashboard</title>
+<title>Project Favourites</title>
 
 <link href="/css/Bootstrap.css" type="text/css" rel="stylesheet">
 <link href="/css/theme.css" type="text/css" rel="stylesheet">
@@ -29,9 +29,9 @@
 							class="nav-link" href="/create"> Create User</a></li>
 						<li class="nav-item"><a class="nav-link" href="/profile">
 								Profile </a></li>
-						<li class="nav-item"><a class="nav-link active" href="#">
+						<li class="nav-item"><a class="nav-link" href="/dashboard">
 								Dashboard </a></li>
-						<li class="nav-item"><a class="nav-link" href="/favourites">
+						<li class="nav-item"><a class="nav-link active" href="#">
 								Favourites </a></li>		
 						<li sec:authorize="hasRole('ROLE_RM')" class="nav-item"><a
 							class="nav-link" href="/manage"> Manage Project Roles </a></li>
@@ -47,7 +47,7 @@
 			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
 				<div
 					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-					<h1 class="h2" th:inline="text">Welcome to your Dashboard
+					<h1 class="h2" th:inline="text">Welcome to your Favourites
 						[[${user.firstName}]]</h1>
 
 				</div>
@@ -190,8 +190,8 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">Close</button>
-					<button id="add-favourites" type="button" class="btn btn-primary">Add
-						to Favourites</button>
+					<button id="remove-favourites" type="button" class="btn btn-primary">Remove
+						from Favourites</button>
 					<button id="show-interest" type="button" class="btn btn-primary">Show
 						Interest</button>
 				</div>

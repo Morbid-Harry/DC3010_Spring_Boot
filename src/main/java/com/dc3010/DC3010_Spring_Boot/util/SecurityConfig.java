@@ -22,7 +22,7 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http.csrf().disable();
 		http.authorizeHttpRequests(authorize -> authorize.dispatcherTypeMatchers(DispatcherType.FORWARD,DispatcherType.ERROR, DispatcherType.ASYNC).permitAll().requestMatchers("/css/**", "/images/**", "/js/**","/resources/**").permitAll()
-				.requestMatchers("/dashboard", "/profile", "/update/user/details", "/update/user/password", "/findOne/{id}","/show-interest/{usedId}/{projectId}").hasAnyRole("USER","RM" ,"ADMIN").requestMatchers("/create", "/register").hasRole("ADMIN").requestMatchers("/manage","/create/project").hasAnyRole("ADMIN", "RM"))
+				.requestMatchers("/dashboard", "/profile", "/update/user/details", "/update/user/password", "/findOne/{id}","/show-interest/{usedId}/{projectId}", "/favourite/{projectId}", "/favourites", "/favourite/remove/{projectId}").hasAnyRole("USER","RM" ,"ADMIN").requestMatchers("/create", "/register").hasRole("ADMIN").requestMatchers("/manage","/create/project").hasAnyRole("ADMIN", "RM"))
 		.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/dashboard", true)
 		.and().logout().logoutSuccessUrl("/login?logout").permitAll().and().userDetailsService(userService);
 		return http.build();

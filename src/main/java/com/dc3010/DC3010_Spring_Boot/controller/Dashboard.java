@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -78,6 +79,7 @@ public class Dashboard {
 			ResponseWrapper wrapper = new ResponseWrapper(foundProject);
 			wrapper.setTools();
 			
+			
 			return new ResponseEntity<ResponseWrapper>(wrapper, HttpStatus.OK);
 		}
 		
@@ -105,5 +107,54 @@ public class Dashboard {
 	
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
+		
+		@PostMapping("/favourite/{projectId}")
+		protected ResponseEntity<Void> favouriteProject(@PathVariable("projectId") Integer projectId, @AuthenticationPrincipal SecUserDetails userDetails)
+		{
+			//Get the user
+			User loggedInUser = userService.getUserByLogin(userDetails.getUsername());
+			
+			
+			//Get their favourites if they have any
+			if(loggedInUser.getFavourtiedProjects().size() > 0)
+			{
+				//Get the project favourited
+				Project projectToAdd = projectService.findOne(projectId);
+				
+				List<User> favouritedBy = projectToAdd.getFavourtiedBy();
+							
+				//Check the project isn't already favourtied by the user
+				for(User user : favouritedBy)
+				{
+					
+					if( user.getUserID() == loggedInUser.getUserID())
+					{
+						
+						//Already in the users favourites so return bad request
+						return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+					}
+				}
+				
+				
+				favouritedBy.add(loggedInUser);
+				
+				projectService.addProject(projectToAdd);
+			}
+			else
+			{
+				
+				//Get the project favourited
+				Project projectToAdd = projectService.findOne(projectId);
+				
+				List<User> favouritedBy = projectToAdd.getFavourtiedBy();
+				
+				favouritedBy.add(loggedInUser);
+				
+				projectService.addProject(projectToAdd);
+			}	
+
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
+		
 	
 }
