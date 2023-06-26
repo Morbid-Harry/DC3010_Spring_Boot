@@ -22,8 +22,6 @@ function applyFilters() {
 	const selectedWayOfWorking = wayOfWorkingFilterSelect.value;
 	const selectedTool = toolFilterSelect.value;
 
-	console.log(selectedTool);
-
 	//For each card check if they match the grade & way of working selected	
 	projectCards.forEach(function(card) {
 

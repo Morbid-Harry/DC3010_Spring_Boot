@@ -23,11 +23,7 @@ $(document)
 									/*Get the tool data that is stored in the response*/
 									var tools = response.tools;
 
-									/*To check data contents in webconsole*/
-									console.log(project);
-									console.log(tools);
 							
-
 									// Select the existing show interest button in the modal footer
 									var showinterestbutton = document.getElementById("show-interest");
 									
@@ -174,10 +170,10 @@ $(document)
 											  </div>	
 											  <div class="row">
 											    <div class="col-6">
-											      <p><strong>Start Date: </strong>${project.startDate}</p>
+											      <p><strong>Start Date: </strong>${project.startDate ? project.startDate: 'Unknown'}</p>
 											    </div>
 											    <div class="col-6">
-											      <p><strong>End Date: </strong>${project.endDate}</p>
+											      <p><strong>End Date: </strong>${project.endDate ? project.endDate : 'Unknown'}</p>
 											    </div>
 											  </div>
 											  <div class="row">
