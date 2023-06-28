@@ -22,8 +22,8 @@
 	<div class="container-fluid">
 		<div class="row">
 			<nav id="sidebarMenu"
-				class="col-md-3 col-lg-2 d-md-block sidebar collapse"
-				style="max-width: 150px">
+				class="col-lg-2 d-lg-block sidebar collapse"
+			>
 				<div id="sidebar-items" class="sticky-top p-2">
 					<ul class="sticky-item nav nav-pills flex-column mb-auto">
 						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
@@ -45,16 +45,16 @@
 				</div>
 			</nav>
 
-			<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+			<main class="ms-md-auto ms-sm-auto col-lg-10 px-md-4 ">
 				<div
 					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 					<h1 class="h2" th:inline="text">Create, Edit or Delete
 						Projects here</h1>
 
 				</div>
-				<div class="row d-flex flex-wrap flex-md-nowrap p-2">
-					<div class="col-6">
-						<div class="card my-3" style="width: 500px;">
+				<div class="row align-items-center  p-2">
+					<div class="col-auto">
+						<div class="card my-3" >
 							<div class="card-body">
 								<h5 class="card-title">New Project Role Form</h5>
 								<form class="needs-validation" method="post" action="/create/project" 
