@@ -20,9 +20,7 @@
 
 	<div class="container-fluid">
 		<div class="row">
-			<nav id="sidebarMenu"
-				class="col-lg-2 d-lg-block sidebar collapse"
-				>
+			<nav id="sidebarMenu" class="col-lg-2 d-lg-block sidebar collapse">
 				<div id="sidebar-items" class="sticky-top p-2">
 					<ul class="sticky-item nav nav-pills flex-column mb-auto">
 						<li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item"><a
@@ -32,7 +30,7 @@
 						<li class="nav-item"><a class="nav-link" href="/dashboard">
 								Dashboard </a></li>
 						<li class="nav-item"><a class="nav-link active" href="#">
-								Favourites </a></li>		
+								Favourites </a></li>
 						<li sec:authorize="hasRole('ROLE_RM')" class="nav-item"><a
 							class="nav-link" href="/manage"> Manage Project Roles </a></li>
 					</ul>
@@ -95,9 +93,9 @@
 				</div>
 
 				<div class="row d-flex flex-wrap p-2">
-					<div class="project-card col-lg-4 col-md-12"
+					<div class="project-card col-lg-4 col-md-12 mb-2"
 						th:each="record : ${projectRecords}">
-						<div class="card my-2">
+						<div class="card my-2" style="height: 100%">
 							<div class="card-header">
 								<h5 class="card-title">[[${record.companyName}]] :
 									[[${record.projectName}]]</h5>
@@ -190,8 +188,8 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
 						data-bs-dismiss="modal">Close</button>
-					<button id="remove-favourites" type="button" class="btn btn-primary">Remove
-						from Favourites</button>
+					<button id="remove-favourites" type="button"
+						class="btn btn-primary">Remove from Favourites</button>
 					<button id="show-interest" type="button" class="btn btn-primary">Show
 						Interest</button>
 				</div>
