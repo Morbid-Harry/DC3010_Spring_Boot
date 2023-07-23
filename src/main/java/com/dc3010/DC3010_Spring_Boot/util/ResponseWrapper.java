@@ -24,10 +24,6 @@ public class ResponseWrapper {
 		return project;
 	}
 
-	public void setProject(Project project) {
-		this.project = project;
-	}
-
 	public ArrayList<String> getTools() {
 		return tools;
 	}

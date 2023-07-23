@@ -9,6 +9,7 @@
 <link href="/css/theme.css" type="text/css" rel="stylesheet">
 <link href="/css/toolsbutton.css" type="text/css" rel="stylesheet">
 <link href="/css/formbutton.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -53,7 +54,7 @@
 
 				</div>
 				<div class="row align-items-center  p-2">
-					<div class="col-auto">
+					<div class="col-lg-6 col-md-12 mb-2">
 						<div class="card my-3" >
 							<div class="card-body">
 								<h5 class="card-title">New Project Role Form</h5>
@@ -63,6 +64,13 @@
 										<div class="alert alert-success alert-dismissible fade show"
 											role="alert">
 											Project Role Created!
+											<button type='button' class='btn-close'data-bs-dismiss='alert' aria-label='Close'></button>
+										</div>
+									</div>
+									<div th:if="${error != null}" class="px-2 mb-2">
+										<div class="alert alert-danger alert-dismissible fade show"
+											role="alert">
+											End date must be after start date!
 											<button type='button' class='btn-close'data-bs-dismiss='alert' aria-label='Close'></button>
 										</div>
 									</div>
@@ -173,7 +181,39 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-6"></div>
+					<div class="col-lg-6 col-md-12">
+						<div class="card my-3" style="height:100%">
+							<div class="card-body">
+								<h5 class="card-title">Select a Project to delete</h5>
+								<table id="project-table" class="display">
+									<thead>
+										<tr>
+											<th>Project ID</th>
+											<th>Client Name</th>
+											<th>Project Name</th>
+											<th>Start Date</th>
+											<th>End Date</th>
+											<th>Grade</th>								
+											<th>...</th>
+										</tr>
+									</thead>
+									<tbody>
+						                    <!-- Use Thymeleaf's iteration to loop through your data and populate the table -->
+						                    <tr th:each="project : ${projectRecords}">
+						                        <!-- Replace 'Column 1' and 'Column 2' with the actual properties from your data object -->
+						                        <td th:text="${project.projectID}"></td>
+						                        <td th:text="${project.companyName}"></td>
+						                        <td th:text="${project.projectName}"></td>
+						                        <td th:text="${project.startDate}"></td>
+						                        <td th:text="${project.endDate}"></td>
+						                        <td th:text="${project.grade}"></td>
+						                        <td><a th:href="@{/project/delete/{projectId}(projectId=${project.projectID})}"class="btn btn-danger btn-sm delete-btn">Delete</a></td>
+						                    </tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
 
 			</main>
@@ -183,6 +223,7 @@
 
 	<script src="/js/Bootstrap.js"></script>
 	<script src="/js/FormValidation.js" type="text/javascript" th:inline="javascript"></script>
+	<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
 	
 	
 	<!--This script shows the address field when either client site or hybrid is selected as a work location and also makes it required-->
@@ -207,6 +248,37 @@
 		}
 	</script>
 	
+	<script type="text/javascript">
+	$(document).ready( function () {
+	    $('#project-table').DataTable({
+	        
+	    });
+	    
+        // Handle the click event of the delete button
+        $('.delete-btn').on('click', function (event) {
+        	
+            // Prevent the default link behavior to avoid navigation
+            event.preventDefault();
+            // Get the href attribute of the delete button
+            var deleteUrl = $(this).attr('href');
+
+            // Send an AJAX request to the server to delete the record
+            $.ajax({
+                type: 'DELETE',
+                url: deleteUrl,
+                success: function () {
+                    // Reload the page to update the table after deletion
+                    location.reload();
+                },
+                error: function () {
+                    // Handle error if the deletion fails
+                    alert('Failed to delete the record.');
+                }
+            });
+        });
+	} );
+	
+	</script>
 </body>
 
 </html>

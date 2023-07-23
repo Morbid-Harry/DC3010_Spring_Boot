@@ -37,4 +37,9 @@ public class ProjectService{
 		 
 	}
 	
+	public void deleteProject(Project project)
+	{
+		projectRepo.delete(project);
+	}
+	
 }

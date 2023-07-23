@@ -4,10 +4,14 @@ import java.sql.Date;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +23,7 @@ import com.dc3010.DC3010_Spring_Boot.Service.ToolService;
 import com.dc3010.DC3010_Spring_Boot.Service.UserService;
 import com.dc3010.DC3010_Spring_Boot.beans.Project;
 import com.dc3010.DC3010_Spring_Boot.beans.Tool;
+import com.dc3010.DC3010_Spring_Boot.beans.User;
 import com.dc3010.DC3010_Spring_Boot.beans.WorkLocation;
 import com.dc3010.DC3010_Spring_Boot.util.SecUserDetails;
 
@@ -44,6 +49,8 @@ public class ManageProjectPage {
 		//add to model to be displayed as tags in manage projects page
 		model.addAttribute("toolRecords", toolRecords);
 		
+		model.addAttribute("projectRecords", projectService.findAll());
+		
 		ModelAndView modelAndView = new ModelAndView("manageproject.html");
 		
 		return modelAndView;
@@ -68,7 +75,19 @@ public class ManageProjectPage {
 		  
 		if(!endDate.equalsIgnoreCase("")) {
 		newProject.setEndDate(Date.valueOf(endDate)); }
-		 
+		
+		
+	    // Check if both start and end dates are given
+	    if (newProject.getStartDate() != null && newProject.getEndDate() != null) {
+	        // Compare start and end dates
+	        if (newProject.getEndDate().before(newProject.getStartDate())) {
+	            // End date is before the start date, handle the error condition
+	            redirectAttributes.addFlashAttribute("error", "end date is before start date");
+	            // Send user back to the project creation page
+	            return new RedirectView("/manage");
+	        }
+	    }
+		
 		//Get Enum value of work location and add to bean
 		WorkLocation location = WorkLocation.valueOf(workLocation);
 		newProject.setWorkLocation(location);
@@ -82,7 +101,7 @@ public class ManageProjectPage {
 		newProject.setGeneralDescription(generalDescription);
 			
 		//If tools/software tags have been selected
-		if (toolsUsed != null && toolsUsed.length > 0) {
+		if (toolsUsed != null) {
 			//Prepare set to add to the project
 			Set<Tool> listOfToolsUsed = new HashSet<Tool>();
             for (String tool : toolsUsed) {
@@ -105,4 +124,19 @@ public class ManageProjectPage {
 	
 		
 	}
+	
+	@DeleteMapping("/project/delete/{projectId}")
+	protected ResponseEntity<Void> deleteProject(@PathVariable("projectId") Integer projectId)
+	{
+		//Get the project to delete 
+		Project projectToDelete = projectService.findOne(projectId);
+		
+		projectService.deleteProject(projectToDelete);
+		
+		// Return a success message or any appropriate response
+        return new ResponseEntity<>(HttpStatus.OK);
+		
+
+	}
+
 }

@@ -1,6 +1,5 @@
 package com.dc3010.DC3010_Spring_Boot.controller;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dc3010.DC3010_Spring_Boot.Service.EmailService;
 import com.dc3010.DC3010_Spring_Boot.Service.ProjectService;
 import com.dc3010.DC3010_Spring_Boot.Service.ToolService;
 import com.dc3010.DC3010_Spring_Boot.Service.UserService;
@@ -30,9 +28,6 @@ public class FavouritesPage {
 	
 	@Autowired
 	private ProjectService projectService;
-	
-	@Autowired
-	private EmailService emailService;
 	
 	@Autowired
 	private ToolService toolService;

@@ -57,12 +57,13 @@ public class ProfilePage {
 	public RedirectView updateUserPassword(RedirectAttributes redirectAttributes, Model model, @AuthenticationPrincipal SecUserDetails userDetails, @RequestParam("current-password") String currentPassword, @RequestParam("new-password") String newPassword, @RequestParam("confirm-password") String confirmPassword)
 	{
 		User currentUser = service.getUserByLogin(userDetails.getUsername());
+	
 		PasswordUtils passUtil = new PasswordUtils();	
 		
 		System.out.println();
 		
 		//Check if current password matches password in DB
-		if(passUtil.matches(currentPassword, userDetails.getPassword()))
+		if(passUtil.matches(currentPassword, currentUser.getPassword()))
 		{
 			//Then need to check if the new password and confirm password are the same
 			if(confirmPassword.equals(newPassword))

@@ -2,7 +2,6 @@ package com.dc3010.DC3010_Spring_Boot.controller;
 
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dc3010.DC3010_Spring_Boot.Service.EmailService;
@@ -23,7 +21,6 @@ import com.dc3010.DC3010_Spring_Boot.Service.ProjectService;
 import com.dc3010.DC3010_Spring_Boot.Service.ToolService;
 import com.dc3010.DC3010_Spring_Boot.Service.UserService;
 import com.dc3010.DC3010_Spring_Boot.beans.Project;
-import com.dc3010.DC3010_Spring_Boot.beans.Tool;
 import com.dc3010.DC3010_Spring_Boot.beans.User;
 import com.dc3010.DC3010_Spring_Boot.util.ResponseWrapper;
 import com.dc3010.DC3010_Spring_Boot.util.SecUserDetails;
@@ -115,46 +112,31 @@ public class Dashboard {
 			User loggedInUser = userService.getUserByLogin(userDetails.getUsername());
 			
 			
-			//Get their favourites if they have any
-			if(loggedInUser.getFavourtiedProjects().size() > 0)
-			{
-				//Get the project favourited
-				Project projectToAdd = projectService.findOne(projectId);
+
+			//Get the project favourited
+			Project projectToAdd = projectService.findOne(projectId);
 				
-				List<User> favouritedBy = projectToAdd.getFavourtiedBy();
 							
 				//Check the project isn't already favourtied by the user
-				for(User user : favouritedBy)
+				//if the user in favourited by has the same Id as the logged in user
+				if(projectToAdd.getFavourtiedBy().contains(loggedInUser))
 				{
-					
-					if( user.getUserID() == loggedInUser.getUserID())
-					{
-						
-						//Already in the users favourites so return bad request
-						return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-					}
+					//Already in the users favourites so return bad request
+					return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 				}
-				
-				
-				favouritedBy.add(loggedInUser);
-				
-				projectService.addProject(projectToAdd);
-			}
-			else
-			{
-				
-				//Get the project favourited
-				Project projectToAdd = projectService.findOne(projectId);
-				
-				List<User> favouritedBy = projectToAdd.getFavourtiedBy();
-				
-				favouritedBy.add(loggedInUser);
-				
-				projectService.addProject(projectToAdd);
-			}	
+				else {
+					// Add the user to the project's favoritedBy list
+					projectToAdd.getFavourtiedBy().add(loggedInUser);
+					//Update favourites table
+					projectService.addProject(projectToAdd);
 
-			return new ResponseEntity<Void>(HttpStatus.OK);
+					return new ResponseEntity<Void>(HttpStatus.OK);
+				}
+			
+
 		}
+		
+
 		
 	
 }

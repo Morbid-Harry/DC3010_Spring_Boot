@@ -20,11 +20,6 @@ public class UserService implements UserDetailsService{
 		userRepo.save(user);
 	}
 	
-	public User getUserByLoginAndPassword(String login, String password)
-	{
-		return userRepo.findUserByLoginAndPassword(login, password);
-	}
-	
 	public User getUserByLogin(String login)
 	{
 		return userRepo.findUserByLogin(login);
@@ -47,7 +42,7 @@ public class UserService implements UserDetailsService{
 		
 		if(user == null)
 		{
-	       throw new UsernameNotFoundException("Username not found" + username);
+	       throw new UsernameNotFoundException("Username not found " + username);
 		}
 		else
 		{
