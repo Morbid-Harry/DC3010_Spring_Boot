@@ -2,6 +2,8 @@ package com.dc3010.DC3010_Spring_Boot.beans;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,6 +42,7 @@ public class User{
 	private String grade;
 	
 	@ManyToMany(mappedBy = "favourtiedBy")
+	@JsonIgnore
 	List<Project> favourtiedProjects;
 		
 	public User()

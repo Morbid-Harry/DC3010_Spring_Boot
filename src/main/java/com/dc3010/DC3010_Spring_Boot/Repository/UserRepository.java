@@ -7,8 +7,6 @@ import com.dc3010.DC3010_Spring_Boot.beans.User;
 
 public interface UserRepository extends CrudRepository<User, Integer>{
 	
-	User findUserByLoginAndPassword(String login, String password);
-	
 	@EntityGraph(attributePaths = "favourtiedProjects")
 	User findUserByLogin(String login);
 	

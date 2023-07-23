@@ -56,7 +56,7 @@ public class Project {
 			  inverseJoinColumns = @JoinColumn(name = "tool_id"))
 	Set<Tool> associatedTools;
 	
-	@ManyToOne(optional = false)
+	@ManyToOne
     @JoinColumn(name = "created_By")
     private User createdBy;
 	

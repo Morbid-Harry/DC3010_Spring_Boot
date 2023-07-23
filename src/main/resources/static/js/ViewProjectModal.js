@@ -32,10 +32,7 @@ $(document)
 									
 									// Select the remove-favourite button in the modal footer
 									var removefavouritebutton = document.getElementById("remove-favourites");
-									
-									//Get the resource managers id that raised the project
-									var userId = project.createdBy.userID;
-									
+																
 									//Get the projects id 
 									var projectId = project.projectID
 									
@@ -109,7 +106,7 @@ $(document)
 									// Add an event listener to handle the click event
 									function showInterestHandler() {
 										// Make the GET request
-										fetch("/show-interest/" + userId + "/" + projectId)
+										fetch("/show-interest/" + projectId)
 											.then(function(response) {
 												// Check if the response was successful
 												if (response.ok) {

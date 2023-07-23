@@ -110,7 +110,7 @@ public class DashboardPageTests {
     @DisplayName("Test should pass when controller returns ok status message when giving a valid user id and project id")
     public void testSendInterestEmail() throws Exception {
     	//As this goes to an external page e.g. outlook there is no other test that can be done
-        mockMvc.perform(get("/show-interest/{userId}/{projectId}", 10, 51)).andExpect(status().isOk());
+        mockMvc.perform(get("/show-interest/{projectId}", 51)).andExpect(status().isOk());
         
     }
     

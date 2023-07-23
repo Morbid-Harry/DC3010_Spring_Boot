@@ -80,11 +80,11 @@ public class Dashboard {
 			return new ResponseEntity<ResponseWrapper>(wrapper, HttpStatus.OK);
 		}
 		
-		@GetMapping("/show-interest/{userId}/{projectId}")
-		protected ResponseEntity<Void> sendInterestEmail(@PathVariable("userId") Integer resourceManagerId, @PathVariable("projectId") Integer projectId,@AuthenticationPrincipal SecUserDetails userDetails)
+		@GetMapping("/show-interest/{projectId}")
+		protected ResponseEntity<Void> sendInterestEmail(@PathVariable("projectId") Integer projectId,@AuthenticationPrincipal SecUserDetails userDetails)
 		{
 			Project projectInterestedIn = projectService.findOne(projectId);
-			User resourceManager = userService.getUserById(resourceManagerId);
+			User resourceManager = projectInterestedIn.getCreatedBy();
 			User loggedInUser = userService.getUserByLogin(userDetails.getUsername());
 			
 	
