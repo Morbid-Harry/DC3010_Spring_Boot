@@ -25,6 +25,7 @@ import com.dc3010.DC3010_Spring_Boot.beans.Project;
 import com.dc3010.DC3010_Spring_Boot.beans.Tool;
 import com.dc3010.DC3010_Spring_Boot.beans.User;
 import com.dc3010.DC3010_Spring_Boot.beans.WorkLocation;
+import com.dc3010.DC3010_Spring_Boot.util.ResponseWrapper;
 import com.dc3010.DC3010_Spring_Boot.util.SecUserDetails;
 
 @Controller
@@ -126,15 +127,16 @@ public class ManageProjectPage {
 	}
 	
 	@DeleteMapping("/project/delete/{projectId}")
-	protected ResponseEntity<Void> deleteProject(@PathVariable("projectId") Integer projectId)
+	protected ResponseEntity<String> deleteProject(@PathVariable("projectId") Integer projectId)
 	{
 		//Get the project to delete 
 		Project projectToDelete = projectService.findOne(projectId);
 		
-		projectService.deleteProject(projectToDelete);
+		//Delete the project from the DB
+		projectService.deleteProject(projectToDelete);		
 		
-		// Return a success message or any appropriate response
-        return new ResponseEntity<>(HttpStatus.OK);
+		//Return the id of that project so the row can be hidden from the table
+		return new ResponseEntity<String>(Integer.toString(projectToDelete.getProjectID()),HttpStatus.OK);
 		
 
 	}

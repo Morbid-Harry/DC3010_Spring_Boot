@@ -54,7 +54,7 @@
 
 				</div>
 				<div class="row align-items-center  p-2">
-					<div class="col-lg-6 col-md-12 mb-2">
+					<div class="col-12">
 						<div class="card my-3" >
 							<div class="card-body">
 								<h5 class="card-title">New Project Role Form</h5>
@@ -181,9 +181,9 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-6 col-md-12">
-						<div class="card my-3" style="height:100%">
-							<div class="card-body">
+					<div class="col-12">
+						<div class="card my-3" >
+							<div class="card-body delete-project-card">
 								<h5 class="card-title">Select a Project to delete</h5>
 								<table id="project-table" class="display">
 									<thead>
@@ -197,10 +197,8 @@
 											<th>...</th>
 										</tr>
 									</thead>
-									<tbody>
-						                    <!-- Use Thymeleaf's iteration to loop through your data and populate the table -->
-						                    <tr th:each="project : ${projectRecords}">
-						                        <!-- Replace 'Column 1' and 'Column 2' with the actual properties from your data object -->
+									<tbody> 
+						                    <tr th:each="project : ${projectRecords}" th:id="${project.projectID}">
 						                        <td th:text="${project.projectID}"></td>
 						                        <td th:text="${project.companyName}"></td>
 						                        <td th:text="${project.projectName}"></td>
@@ -251,7 +249,7 @@
 	<script type="text/javascript">
 	$(document).ready( function () {
 	    $('#project-table').DataTable({
-	        
+	    	"paging":   false
 	    });
 	    
         // Handle the click event of the delete button
@@ -259,6 +257,7 @@
         	
             // Prevent the default link behavior to avoid navigation
             event.preventDefault();
+            
             // Get the href attribute of the delete button
             var deleteUrl = $(this).attr('href');
 
@@ -266,13 +265,31 @@
             $.ajax({
                 type: 'DELETE',
                 url: deleteUrl,
-                success: function () {
-                    // Reload the page to update the table after deletion
-                    location.reload();
+                success: function (response) {
+                	var cardBody = document.querySelector('.delete-project-card');
+					
+					// Create the alert message
+					var alert = document.createElement('div');
+					alert.className = 'alert alert-success alert-dismissible fade show';
+					alert.role = 'alert';
+					alert.innerHTML = "Project Deleted!" + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+					
+					// Insert the new alert at the top of the card 
+					cardBody.insertBefore(alert, cardBody.firstChild);
+					
+					$('#' + response).fadeOut(300, function() { $(this).remove(); });
                 },
                 error: function () {
-                    // Handle error if the deletion fails
-                    alert('Failed to delete the record.');
+                	var cardBody = document.querySelector('.delete-project-card');
+					
+					// Create the alert message
+					var alert = document.createElement('div');
+					alert.className = 'alert alert-danger alert-dismissible fade show';
+					alert.role = 'alert';
+					alert.innerHTML = "An Error occured when attempting to delete the project!" + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+					
+					// Insert the new alert at the top of the card 
+					cardBody.insertBefore(alert, cardBody.firstChild);
                 }
             });
         });
