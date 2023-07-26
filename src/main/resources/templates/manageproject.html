@@ -49,7 +49,7 @@
 			<main class="ms-md-auto ms-sm-auto col-lg-10 px-md-4 ">
 				<div
 					class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-					<h1 class="h2" th:inline="text">Create, Edit or Delete
+					<h1 class="h2" th:inline="text">Create or Delete
 						Projects here</h1>
 
 				</div>
@@ -246,6 +246,7 @@
 		}
 	</script>
 	
+	<!-- This script handles deleting of records from the data table asyncronously -->
 	<script type="text/javascript">
 	$(document).ready( function () {
 	    $('#project-table').DataTable({
@@ -261,25 +262,26 @@
             // Get the href attribute of the delete button
             var deleteUrl = $(this).attr('href');
 
-            // Send an AJAX request to the server to delete the record
+            // Send an AJAX request to manageprojectpage controller to delete the record
             $.ajax({
                 type: 'DELETE',
                 url: deleteUrl,
                 success: function (response) {
+                	//Select the table card
                 	var cardBody = document.querySelector('.delete-project-card');
-					
 					// Create the alert message
 					var alert = document.createElement('div');
 					alert.className = 'alert alert-success alert-dismissible fade show';
 					alert.role = 'alert';
 					alert.innerHTML = "Project Deleted!" + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
 					
-					// Insert the new alert at the top of the card 
+					//Insert the new success alert at the top of the card 
 					cardBody.insertBefore(alert, cardBody.firstChild);
 					
 					$('#' + response).fadeOut(300, function() { $(this).remove(); });
                 },
                 error: function () {
+                	//Select the table card
                 	var cardBody = document.querySelector('.delete-project-card');
 					
 					// Create the alert message

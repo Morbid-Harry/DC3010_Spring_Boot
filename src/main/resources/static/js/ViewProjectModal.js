@@ -49,7 +49,7 @@ $(document)
 														var alert = document.createElement('div');
 														alert.className = 'alert alert-success alert-dismissible fade show';
 														alert.role = 'alert';
-														alert.innerHTML = "Add to your Favourites!" + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+														alert.innerHTML = "Added to your Favourites!" + "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
 														
 														// Insert the new alert at the top of the modal body
 														modalBody.insertBefore(alert, modalBody.firstChild);
