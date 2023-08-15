@@ -2,7 +2,7 @@ package com.dc3010.DC3010_Spring_Boot;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Date;
@@ -87,6 +87,48 @@ public class ProjectServiceTests {
 		assertEquals("Test Company", newProject.getCompanyName());
 		
 		projectRepo.deleteById(newProject.getProjectID());
+	}
+	
+	@Test
+	@DisplayName("Test should pass when delete a project from the DB")
+	void deleteProject()
+	{
+		Project newProject = new Project();
+		newProject.setCompanyName("Test Company");
+		newProject.setProjectName("Test Project");
+		newProject.setGrade("A10");
+		newProject.setStartDate(Date.valueOf("2023-05-30"));
+		newProject.setEndDate(Date.valueOf("2023-07-30"));
+		newProject.setWorkLocation(WorkLocation.valueOf("Client_Site"));
+		newProject.setAddress("Test Address");
+		newProject.setGeneralDescription("Test Description");
+		newProject.setCreatedBy(userService.getUserById(1));
+
+		
+		
+		
+		projectService.addProject(newProject);
+		
+		
+		
+		List<Project> allProjects = projectService.findAll(); 
+		
+		for(Project project : allProjects)
+		{
+			if(project.getCompanyName().equals("Test Company"))
+			{
+				newProject = project;
+			}
+		}
+		
+		assertNotNull(newProject);
+		assertEquals("Test Company", newProject.getCompanyName());
+		
+		int id = newProject.getProjectID();
+		
+		projectService.deleteProject(newProject);
+		
+		assertThrows(NoSuchElementException.class, () -> projectService.findOne(id));
 	}
 	
 	@Test
