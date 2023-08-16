@@ -14,13 +14,23 @@ import com.dc3010.DC3010_Spring_Boot.beans.User;
 import com.dc3010.DC3010_Spring_Boot.util.PasswordUtils;
 import com.dc3010.DC3010_Spring_Boot.util.SecUserDetails;
 
-
+/**
+ * Controller which handles HTTP response and requests for the Admin create user page
+ * @author Harry
+ *
+ */
 @Controller  
 public class CreateUserPage {
 		
 	@Autowired
 	private UserService userService;
-
+	
+	/**
+	 * 
+	 * @param model data that is held within the model
+	 * @param userDetails holds the currently logged in users information
+	 * @return a model and view to be displayed to the user 
+	 */
 	@GetMapping("/create")
 	protected ModelAndView doGet(Model model, @AuthenticationPrincipal SecUserDetails userDetails){
 				
@@ -29,6 +39,18 @@ public class CreateUserPage {
 		return modelAndView;
 	}
 	
+	/**
+	 * 
+	 * @param model contains data of the associated page such as error and success messages
+	 * @param email the string provided from the create user page form
+	 * @param firstName the string provided from the create user page form
+	 * @param lastName the string provided from the create user page form
+	 * @param username the string provided from the create user page form
+	 * @param password the string provided from the create user page form
+	 * @param selectedOptions the roles selected on the create user page form
+	 * @param grade the string of the grade selected on the create user page form
+	 * @return
+	 */
 	@PostMapping("/register")
 	protected ModelAndView doPost(Model model, @RequestParam("register-email") String email, @RequestParam("register-first-name") String firstName, @RequestParam("register-last-name") String lastName, @RequestParam("register-user-name") String username,  @RequestParam("register-password") String password, @RequestParam(value = "roles", required = false) String[] selectedOptions, @RequestParam("register-user-grade") String grade)
 	{

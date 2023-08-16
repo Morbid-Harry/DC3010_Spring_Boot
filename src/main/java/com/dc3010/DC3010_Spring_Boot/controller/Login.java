@@ -21,7 +21,11 @@ import com.dc3010.DC3010_Spring_Boot.Service.UserService;
 public class Login{
 	@Autowired
 	UserService userService;
-
+	
+	/**
+	 * 
+	 * @return the main page is displayed when the /login endpoint is requested 
+	 */
 	@GetMapping
 	String login()
 	{		

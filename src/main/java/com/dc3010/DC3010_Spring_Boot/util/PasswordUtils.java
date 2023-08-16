@@ -3,10 +3,14 @@ package com.dc3010.DC3010_Spring_Boot.util;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+/**
+ * To hash passwords before being sent to the database must use a password encoder. 
+ * Uses BCrypt library to encode and match passwords this is then used by Spring Security to automatically match passwords on login 
+ * @author Harry
+ *
+ */
 public class PasswordUtils implements PasswordEncoder{
 	
-	
-	// Generate a salt and hash the password
 	@Override
 	public String encode(CharSequence rawPassword) {
 		String salt = BCrypt.gensalt();

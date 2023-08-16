@@ -28,6 +28,11 @@ import com.dc3010.DC3010_Spring_Boot.beans.WorkLocation;
 import com.dc3010.DC3010_Spring_Boot.util.ResponseWrapper;
 import com.dc3010.DC3010_Spring_Boot.util.SecUserDetails;
 
+/**
+ * Controller which handles HTTP response and requests for the Manage Project Role page
+ * @author Harry
+ *
+ */
 @Controller
 public class ManageProjectPage {
 	
@@ -40,6 +45,13 @@ public class ManageProjectPage {
 	@Autowired
 	private UserService userService;
 	
+	/**
+	 * When a user navigates to the manage project roles page this function is called 
+	 * all tools in the DB are sent to the page to display as tags when creating a project
+	 * all project in the DB are also sent to the page and displayed in a table so they can be deleted if needed
+	 * @param model contains data of the associated page such toolRecords and projectRecords
+	 * @return the view manageproject.html and the 2 model attributes toolRecords and projecrRecords
+	 */
 	@GetMapping("/manage")
 	ModelAndView doGet(Model model)
 	{
@@ -58,6 +70,21 @@ public class ManageProjectPage {
 		
 	}
 	
+	/**
+	 * On success or failure of creating a project records this function is called. It will redirect back to the page with either a success or failure flash attribute to display a messsage to the user
+	 * @param userDetails the logged in user
+	 * @param redirectAttributes to set a success or failure message on the page
+	 * @param clientName client that requires the project role 
+	 * @param projectName the name of the project for the project role
+	 * @param grade the required grade of the project from A1 to A10 
+	 * @param startDate the start date of the project 
+	 * @param endDate the end date of the project not required but if given it must be further in the future than the start date
+	 * @param workLocation can either be Remote, Client_Site or Hybrid if it is Hybrid or Client Site then an address must also be given
+	 * @param address if client site or hybrid was select for work location then this must be specified
+	 * @param generalDescription the job description of the project role
+	 * @param toolsUsed the selected tags given in the create project form and their names to search for them in the database
+	 * @return redirects back to the manage project roles page with either a success or failure flash attribute which determines the bootstrap alert they receive
+	 */
 	@PostMapping("/create/project")
 	RedirectView createProject(@AuthenticationPrincipal SecUserDetails userDetails, RedirectAttributes redirectAttributes, @RequestParam("client-name") String clientName, @RequestParam("project-name") String projectName, @RequestParam("project-grade") String grade, 
 			@RequestParam(value = "start-date", required = false) String startDate, @RequestParam(value = "end-date", required = false) String endDate,
@@ -126,6 +153,11 @@ public class ManageProjectPage {
 		
 	}
 	
+	/**
+	 * When a user is on the manage project roles page and select a project to delete this function is called
+	 * @param projectId the id of the project the user wants to delete
+	 * @return the Ok status and the Id of the project delete so it can be hidden in the datatable via javascript
+	 */
 	@DeleteMapping("/project/delete/{projectId}")
 	protected ResponseEntity<String> deleteProject(@PathVariable("projectId") Integer projectId)
 	{

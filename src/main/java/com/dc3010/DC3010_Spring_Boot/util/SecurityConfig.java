@@ -11,6 +11,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.dc3010.DC3010_Spring_Boot.Service.UserService;
 
 import jakarta.servlet.DispatcherType;
+
+/**
+ * Configures spring security to overide default values such as what login page to display what endpoints are accessible. Also configures password encoding
+ * @author Harry
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -18,6 +24,12 @@ public class SecurityConfig {
 	@Autowired
 	UserService userService;
 	
+	/**
+	 * 
+	 * @param http used to configure the specifics of spring security such as endpoints allowed within the application
+	 * @return FilterChain is returned to spring security to reconfigure default values
+	 * @throws Exception
+	 */
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http.csrf().disable();

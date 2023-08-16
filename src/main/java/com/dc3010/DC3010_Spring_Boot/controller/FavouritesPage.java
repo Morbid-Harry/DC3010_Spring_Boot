@@ -20,6 +20,11 @@ import com.dc3010.DC3010_Spring_Boot.beans.Project;
 import com.dc3010.DC3010_Spring_Boot.beans.User;
 import com.dc3010.DC3010_Spring_Boot.util.SecUserDetails;
 
+/**
+ * Controller which handles HTTP response and requests for the Favourites page
+ * @author Harry
+ *
+ */
 @Controller
 public class FavouritesPage {
 	
@@ -32,6 +37,12 @@ public class FavouritesPage {
 	@Autowired
 	private ToolService toolService;
 	
+	/**
+	 * When a user clicks to go to the favourites page this function is called and will return favourites.html page along with that users favourite projects
+	 * @param model contains data of the associated page such as projectRecords and allTools
+	 * @param userDetails the currently logged in user
+	 * @return favourites.html page view along with that users favourite project and list of all tools to be used in filtering
+	 */
 	@GetMapping("/favourites")
 	protected ModelAndView doGet(Model model, @AuthenticationPrincipal SecUserDetails userDetails){
 		
@@ -52,7 +63,12 @@ public class FavouritesPage {
 		return modelAndView;
 	}
 	
-	
+	/**
+	 * When a user removes a project from their favourites this controller is called 
+	 * @param projectId the id of the project the user is currently viewing the details of and will be removed from the favourites table
+	 * @param userDetails the details of the logged in user
+	 * @return an Ok status message done Asynchronously so does not return a view
+	 */
 	@PostMapping("/favourite/remove/{projectId}")
 	protected ResponseEntity<Void> removefavouriteProject(@PathVariable("projectId") Integer projectId, @AuthenticationPrincipal SecUserDetails userDetails)
 	{

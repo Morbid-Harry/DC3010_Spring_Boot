@@ -24,7 +24,11 @@ import com.dc3010.DC3010_Spring_Boot.beans.Project;
 import com.dc3010.DC3010_Spring_Boot.beans.User;
 import com.dc3010.DC3010_Spring_Boot.util.ResponseWrapper;
 import com.dc3010.DC3010_Spring_Boot.util.SecUserDetails;
-
+/**
+ * Controller which handles HTTP response and requests for the Dashboard page
+ * @author Harry
+ *
+ */
 @Controller    
 public class Dashboard {
 		
@@ -67,6 +71,11 @@ public class Dashboard {
 			return modelAndView;
 		}
 		
+		/**
+		 * 
+		 * @param projectId the integer value of the project selected when clicking view details on the dashboard or favourites page
+		 * @return a json response holding a response wrapper object containing the project details and its associated tools to be displayed as a modal
+		 */
 		@GetMapping("/findOne/{id}")
 		protected ResponseEntity<ResponseWrapper> findOneProject(@PathVariable("id") Integer projectId){
 			
@@ -80,6 +89,12 @@ public class Dashboard {
 			return new ResponseEntity<ResponseWrapper>(wrapper, HttpStatus.OK);
 		}
 		
+		/**
+		 * Handles the request of when a user click the send email button when viewing the details of a project
+		 * @param projectId the id of the project the user is viewing the details of used to get the project info for the email text
+		 * @param userDetails the logged in users information
+		 * @return a json response of Ok if the email sent correctly 
+		 */
 		@GetMapping("/show-interest/{projectId}")
 		protected ResponseEntity<Void> sendInterestEmail(@PathVariable("projectId") Integer projectId,@AuthenticationPrincipal SecUserDetails userDetails)
 		{
@@ -105,6 +120,12 @@ public class Dashboard {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
 		
+		/**
+		 * Handles the request of when a use clicks to add a project to their favourites on the dashboard page
+		 * @param projectId projectId the id of the project the user is viewing the details of to then add that project to that users favourites
+		 * @param userDetails the details of the logged in user
+		 * @return returns either an OK or Bad_Request if either the user already has the project in their favourites or not
+		 */
 		@PostMapping("/favourite/{projectId}")
 		protected ResponseEntity<Void> favouriteProject(@PathVariable("projectId") Integer projectId, @AuthenticationPrincipal SecUserDetails userDetails)
 		{
